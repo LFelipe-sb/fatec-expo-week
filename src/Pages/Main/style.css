@@ -1,0 +1,35 @@
+.container-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50%;
+}
+
+.container-main :is(.card) {
+  background: #fff;
+  color: black;
+  padding: 1.5rem;
+  margin: 1.25rem;
+  border-radius: 0.3125rem;
+}
+
+.container-main :is(a) {
+  text-decoration: none;
+}
+
+@media screen and (min-width: 768px) {
+  .container-main {
+    padding: 30%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .container-main {
+    padding: 10%;
+  }
+
+  .container-main :is(.card) {
+    padding: 2rem;
+  }
+}

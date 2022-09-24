@@ -1,0 +1,27 @@
+.container-nav {
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.625rem;
+}
+
+.container-nav :is(.fatec) {
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-nav :is(.fatec-img) {
+  width: 100%;
+}
+
+.container-nav :is(.cps) {
+  width: 10%;
+}
+
+@media screen and (min-width: 769px) {
+  .container-nav :is(.fatec, .cps) {
+    width: 5%;
+  }
+}

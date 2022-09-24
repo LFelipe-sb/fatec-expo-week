@@ -1,0 +1,22 @@
+.container-cadastro :is(.voltar) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 5% 5%;
+}
+
+.container-cadastro :is(img) {
+  width: 15%;
+}
+
+@media screen and (min-width: 768px) {
+  .container-cadastro :is(.voltar) {
+    margin: 3% 8%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .container-cadastro :is(img) {
+    width: 5%;
+  }
+}
