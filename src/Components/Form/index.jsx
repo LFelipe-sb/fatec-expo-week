@@ -1,6 +1,7 @@
 import './style.css';
 import api from '../../Service/api'
 import { useState } from 'react';
+import { IMaskInput } from "react-imask";
 
 function Form(props) {
   const [name, setName] = useState('');
@@ -28,17 +29,32 @@ function Form(props) {
   }
   return (
     <div className="container-form">
-      <form action="post">
-        <input type="text" placeholder='Nome: ' value={name} onChange={e => setName(e.target.value)} />
+      <form>
+        <input type="text" placeholder='Nome: ' value={name} onChange={e => setName(e.target.value)} required />
         {props.user == 1 ?
-          <input type="text" placeholder='RA: ' value={ra} onChange={e => setRa(e.target.value)} /> :
-          <input type="text" placeholder='CPF: ' value={cpf} onChange={e => setCpf(e.target.value)} />}
+          <IMaskInput
+            mask="000000000-0/SP"
+            placeholder="RA: "
+            value={ra} onChange={e => setRa(e.target.value)}
+            required
+          /> :
+          <IMaskInput
+            mask="000.000.000-00"
+            placeholder="CPF: "
+            value={cpf} onChange={e => setCpf(e.target.value)}
+            required
+          />}
         {props.user == 1 ? <>
-          <input type="text" placeholder='Curso: ' value={curso} onChange={e => setCurso(e.target.value)} />
-          <input type="text" placeholder='Período: ' /> </> : <></>
+          <input type="text" placeholder='Curso: ' value={curso} onChange={e => setCurso(e.target.value)} required />
+          <input type="text" placeholder='Período: ' required /> </> : <></>
         }
-        <input type="tel" placeholder='Telefone: ' value={tel} onChange={e => setTel(e.target.value)} />
-        <input type="mail" placeholder='Email: ' value={email} onChange={e => setEmail(e.target.value)} />
+        <IMaskInput
+          mask="(00) 00000-0000"
+          placeholder="Telefone:"
+          value={tel} onChange={e => setTel(e.target.value)}
+          required
+        />
+        <input type="email" placeholder='Email: ' value={email} onChange={e => setEmail(e.target.value)} required />
         <div className="container-button">
           <button>Cadastrar</button>
           <button>Cancelar</button>
