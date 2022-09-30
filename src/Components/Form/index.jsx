@@ -4,18 +4,20 @@ import { useState } from 'react';
 import { IMaskInput } from "react-imask";
 
 function Form(props) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [tel, setTel] = useState('');
-  const [ra, setRa] = useState('');
-  const [curso, setCurso] = useState('');
-  const [periodo, setPeriodo] = useState('');
-  const [cpf, setCpf] = useState('');
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [tel, setTel] = useState(null);
+  const [ra, setRa] = useState(null);
+  const [curso, setCurso] = useState(null);
+  const [periodo, setPeriodo] = useState(null);
+  const [cpf, setCpf] = useState(null);
 
-  async function createUser() {
+  async function createUser(event) {
+    event.preventDefault();
+    
     try {
       const data = {
-        name, email, ra, cpf, curso, periodo
+        name, email, ra, cpf, curso, periodo, tel
       }
 
       await api.post('/user', data);
@@ -46,7 +48,7 @@ function Form(props) {
           />}
         {props.user == 1 ? <>
           <input type="text" placeholder='Curso: ' value={curso} onChange={e => setCurso(e.target.value)} required />
-          <input type="text" placeholder='Período: ' required /> </> : <></>
+          <input type="text" placeholder='Período: ' value={periodo} onChange={e => setPeriodo(e.target.value)} required /> </> : <></>
         }
         <IMaskInput
           mask="(00) 00000-0000"
@@ -56,7 +58,7 @@ function Form(props) {
         />
         <input type="email" placeholder='Email: ' value={email} onChange={e => setEmail(e.target.value)} required />
         <div className="container-button">
-          <button>Cadastrar</button>
+          <button onClick={createUser}>Cadastrar</button>
           <button>Cancelar</button>
         </div>
       </form>
