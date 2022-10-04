@@ -13,7 +13,7 @@ function Form(props) {
   const [cpf, setCpf] = useState(null);
 
   async function createUser(event) {
-    event.preventDefault();
+    // event.preventDefault();
     
     try {
       const data = {
