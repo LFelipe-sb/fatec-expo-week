@@ -1,4 +1,5 @@
 import Check from '../../Images/icon-check.png';
+import { Link } from 'react-router-dom';
 
 import './style.css';
 
@@ -70,7 +71,7 @@ function Index(props) {
                 </tbody>
             </table>
             <button className='buttons-table'>Salvar</button>
-            <button className='buttons-table'>Cancelar</button>
+            <Link to='/'><button className='buttons-table'>Cancelar</button></Link>
         </div>
     )
 }
