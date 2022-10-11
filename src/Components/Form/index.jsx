@@ -2,6 +2,7 @@ import './style.css';
 import api from '../../Service/api'
 import { useState } from 'react';
 import { IMaskInput } from "react-imask";
+import { Link, useNavigate } from 'react-router-dom';
 
 function Form(props) {
   const [name, setName] = useState(null);
@@ -11,41 +12,84 @@ function Form(props) {
   const [curso, setCurso] = useState(null);
   const [periodo, setPeriodo] = useState(null);
   const [cpf, setCpf] = useState(null);
+  const [btnName, setBtnName] = useState('Cadastrar');
+
+  const navigate = useNavigate();
 
   async function createUser(event) {
-    // event.preventDefault();
+    event.preventDefault();
     
     try {
       const data = {
         name, email, ra, cpf, curso, periodo, tel
       }
 
-      await api.post('/user', data);
+      if(btnName === 'Acessar') {
+        navigate("/visita-palestra");
+      } else {
+        await api.post('/user', data);
 
-      alert(`Usuário ${name} cadastrado com sucesso!`)
-
+        alert(`Usuário ${name} cadastrado com sucesso!`);
+  
+        setCpf('');
+        setName('');
+        setTel('');
+        setEmail('');
+      }
     }
     catch (err) {
       alert(`Houve um erro: ${err}`)
     }
   }
+
+  async function getVisitorInfo() {
+
+    console.log(process.env.REACT_APP_FATEC_API_URL)
+
+    const { data } = await api.get(`/user/${cpf}`);
+
+    if(data) {
+      setName(data[0].nome);
+      setTel(data[0].telefone);
+      setEmail(data[0].email);
+      setBtnName('Acessar');
+    }
+  }
+
+  async function getStudentInfo() {
+    const { data } = await api.get(`/student/${ra}`);
+    console.log(data)
+    if(data) {
+      setName(data[0].nome);
+      setTel(data[0].telefone);
+      setEmail(data[0].email);
+      setCurso(data[0].descricao);
+      setPeriodo(data[0].semestre);
+      setBtnName('Acessar');
+    }
+  }
+
   return (
     <div className="container-form">
       <form>
-        <input type="text" placeholder='Nome: ' value={name} onChange={e => setName(e.target.value)} required />
+        
         {props.user == 1 ?
           <IMaskInput
             mask="000000000-0/SP"
             placeholder="RA: "
             value={ra} onChange={e => setRa(e.target.value)}
             required
+            onBlur={getStudentInfo}
           /> :
           <IMaskInput
             mask="000.000.000-00"
             placeholder="CPF: "
             value={cpf} onChange={e => setCpf(e.target.value)}
             required
+            onBlur={getVisitorInfo}
+
           />}
+        <input type="text" placeholder='Nome: ' value={name} onChange={e => setName(e.target.value)} required />
         {props.user == 1 ? <>
           <input type="text" placeholder='Curso: ' value={curso} onChange={e => setCurso(e.target.value)} required />
           <input type="text" placeholder='Período: ' value={periodo} onChange={e => setPeriodo(e.target.value)} required /> </> : <></>
@@ -58,8 +102,8 @@ function Form(props) {
         />
         <input type="email" placeholder='Email: ' value={email} onChange={e => setEmail(e.target.value)} required />
         <div className="container-button">
-          <button onClick={createUser}>Cadastrar</button>
-          <button>Cancelar</button>
+          <button onClick={createUser}>{btnName}</button>
+          <Link to='/'><button>Cancelar</button></Link>
         </div>
       </form>
     </div>
