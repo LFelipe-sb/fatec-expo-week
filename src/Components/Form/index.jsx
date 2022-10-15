@@ -11,7 +11,7 @@ function Form(props) {
   const [tel, setTel] = useState(null);
   const [ra, setRa] = useState(null);
   const [curso, setCurso] = useState(null);
-  const [periodo, setPeriodo] = useState(null);
+  const [semestre, setSemestre] = useState(null);
   const [cpf, setCpf] = useState(null);
   const [btnName, setBtnName] = useState('Cadastrar');
   const [isDisabled, setIsDisabled] = useState(false);
@@ -24,7 +24,7 @@ function Form(props) {
     
     try {
       const data = {
-        name, email, ra, cpf, curso, periodo, tel
+        name, email, ra, cpf, curso, semestre, tel
       }
 
       if(btnName === 'Acessar') {
@@ -32,7 +32,35 @@ function Form(props) {
         navigate("/visita-palestra");
       } else {
 
-        if(!terms) {
+        if(props.user == 1 && !ra && !email && !curso && !semestre) {
+          toast.warning('Preencha seu RA e email!', {
+            position: "top-center",
+            autoClose: 3500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          console.log(props.user == 1, !ra, !email, !curso, !semestre)
+          return;
+        }
+        if(props.user == 0 && !cpf || !email || !name || !tel) {
+          toast.warning('Por favor, preencha todos os campos!', {
+            position: "top-center",
+            autoClose: 3500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          return;
+        };
+
+        if(!terms && props.user == 0) {
           toast.warning('É preciso aceitar os termos para avançar!', {
             position: "top-center",
             autoClose: 3500,
@@ -89,24 +117,39 @@ function Form(props) {
       setIsDisabled(true);
       sessionStorage.setItem("userId", data[0].id_pessoa);
       sessionStorage.setItem("userName", data[0].nome);
+    } else {
+      setName('');
+      setTel('');
+      setEmail('');
+      setBtnName('Cadastrar');
+      setIsDisabled(false);
     }
   }
 
   async function getStudentInfo() {
-    const { data } = await api.get(`/student/${ra}`);
+    if(!ra || !email) return;
+
+    const { data } = await api.get(`/student/${ra}/${email}`);
     if(data) {
       setName(data[0].nome);
       setTel(data[0].telefone);
       setEmail(data[0].email);
       setCurso(data[0].descricao);
-      setPeriodo(data[0].semestre);
+      setSemestre(data[0].semestre);
       setBtnName('Acessar');
       setIsDisabled(true);
       sessionStorage.setItem("userId", data[0].id_pessoa);
       sessionStorage.setItem("userName", data[0].nome);
+    } else {
+      setName('');
+      setTel('');
+      setCurso('');
+      setSemestre('');
+      setBtnName('Cadastrar');
+      setIsDisabled(false);
     }
   }
-
+  
   function handleChange(e) {
     const {checked} = e.target;
     setTerms(checked);
@@ -125,26 +168,27 @@ function Form(props) {
             onBlur={getStudentInfo}
           /> :
           <IMaskInput
-            mask="000.000.000-00"
-            placeholder="CPF: "
-            value={cpf} onChange={e => setCpf(e.target.value)}
-            required
-            onBlur={getVisitorInfo}
-
-          />}
-        <input type="text" placeholder='Nome: ' value={name} onChange={e => setName(e.target.value)} required disabled={isDisabled} />
-        {props.user == 1 ? <>
-          <input type="text" placeholder='Curso: ' value={curso} onChange={e => setCurso(e.target.value)} required disabled={isDisabled}/>
-          <input type="text" placeholder='Período: ' value={periodo} onChange={e => setPeriodo(e.target.value)} required disabled={isDisabled}/> </> : <></>
-        }
-        <IMaskInput
-          mask="(00) 00000-0000"
-          placeholder="Telefone:"
-          value={tel} onChange={e => setTel(e.target.value)}
+          mask="000.000.000-00"
+          placeholder="CPF: "
+          value={cpf} onChange={e => setCpf(e.target.value)}
           required
-          disabled={isDisabled}
-        />
-        <input type="email" placeholder='Email: ' value={email} onChange={e => setEmail(e.target.value)} required disabled={isDisabled}/>
+          onBlur={getVisitorInfo}
+        />}
+        <input type="email" placeholder='Email: ' value={email} onChange={e => setEmail(e.target.value)} required onBlur={getStudentInfo} disabled={props.user !== 1 ? isDisabled : false}/>
+        <input type="text" placeholder='Nome: ' value={name} onChange={e => setName(e.target.value)} required disabled={props.user == 1 ? true : isDisabled} />
+        {props.user == 1 ? <>
+          <input type="text" placeholder='Curso: ' value={curso} onChange={e => setCurso(e.target.value)} required disabled={true}/>
+          <input type="text" placeholder='Semestre: ' value={semestre} onChange={e => setSemestre(e.target.value)} required disabled={true}/> </> : <></>
+        }
+        {props.user !== 1 ?
+          <IMaskInput
+            mask="(00) 00000-0000"
+            placeholder="Telefone:"
+            value={tel} onChange={e => setTel(e.target.value)}
+            required
+            disabled={isDisabled}
+          /> : <></>
+        }
 
         {props.user == 0 && btnName == 'Cadastrar' ?
           <div className='use-term'>
@@ -163,7 +207,7 @@ function Form(props) {
           } 
 
         <div className="container-button">
-          <button onClick={createUser}>{btnName}</button>
+          <button onClick={createUser}>{props.user == 1 ? 'Acessar' : btnName}</button>
           <Link to='/'><button>Cancelar</button></Link>
         </div>
       </form>
