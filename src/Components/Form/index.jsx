@@ -51,6 +51,8 @@ function Form(props) {
       setEmail(data[0].email);
       setBtnName('Acessar');
       setIsDisabled(true);
+      sessionStorage.setItem("userId", data[0].id_pessoa);
+      sessionStorage.setItem("userName", data[0].nome);
     }
   }
 
@@ -64,6 +66,8 @@ function Form(props) {
       setPeriodo(data[0].semestre);
       setBtnName('Acessar');
       setIsDisabled(true);
+      sessionStorage.setItem("userId", data[0].id_pessoa);
+      sessionStorage.setItem("userName", data[0].nome);
     }
   }
 
