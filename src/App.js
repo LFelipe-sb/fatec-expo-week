@@ -7,12 +7,16 @@ import VisitaPalestra from './Pages/Check/VisitaPalestra';
 import Checkout from './Pages/Check/Checkout.jsx';
 import Login from './Pages/Login/index.jsx';
 
+import { ToastContainer } from 'react-toastify';
+
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ToastContainer />
         <Nav />
         <Routes>
           <Route path='/' element={<Main />} />

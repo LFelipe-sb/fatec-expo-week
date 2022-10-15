@@ -4,6 +4,8 @@ import Check from '../../Images/icon-check.png';
 import { Link } from 'react-router-dom';
 import './style.css';
 
+import { toast } from 'react-toastify';
+
 function Index(props) {
 
     const [selectedEvents, setSelectedEvents] = useState([]);
@@ -22,6 +24,20 @@ function Index(props) {
         const UniqueSelectedEvents = selectedEvents.filter((item, i) => selectedEvents.indexOf(item) === i);
 
         e.preventDefault();
+
+        if(!!UniqueSelectedEvents) {
+            toast.warning('Escolha algum evento para salvar!', {
+                position: "top-center",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
     
         try {
             const data = {
@@ -35,12 +51,30 @@ function Index(props) {
                 setSelectedEvents([]);
                 return {...event, isChecked: false}
             });
-            setAllEvents(tempUser)
+            setAllEvents(tempUser);
 
-            alert('Pronto! Agora você poderá ir aos eventos selecionados.');
+            toast.success('Pronto! Agora você poderá ir aos eventos selecionados.', {
+                position: "top-center",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
 
         }catch (err) {
-            alert(`Houve um erro: ${err}`)
+            toast.error(`Houve um erro: ${err}`, {
+                position: "top-center",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     }
 

@@ -3,6 +3,7 @@ import api from '../../Service/api'
 import { useState } from 'react';
 import { IMaskInput } from "react-imask";
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Form(props) {
   const [name, setName] = useState(null);
@@ -30,7 +31,16 @@ function Form(props) {
       } else {
         await api.post('/user', data);
 
-        alert(`Usuário ${name} cadastrado com sucesso!`);
+        toast.success(`Usuário ${name} cadastrado com sucesso!`, {
+          position: "top-center",
+          autoClose: 3500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
   
         setCpf('');
         setName('');
@@ -39,7 +49,16 @@ function Form(props) {
       }
     }
     catch (err) {
-      alert(`Houve um erro: ${err}`)
+      toast.error(`Houve um erro: ${err}`, {
+        position: "top-center",
+        autoClose: 3500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
