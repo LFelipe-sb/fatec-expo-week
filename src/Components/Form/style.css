@@ -18,6 +18,7 @@
     background: none;
     border: none;
     border-bottom: 1px solid #000;
+    padding: 8px;
 }
 
 .container-form :is(input):focus-visible {

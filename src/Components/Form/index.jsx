@@ -13,6 +13,7 @@ function Form(props) {
   const [periodo, setPeriodo] = useState(null);
   const [cpf, setCpf] = useState(null);
   const [btnName, setBtnName] = useState('Cadastrar');
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const navigate = useNavigate();
 
@@ -43,22 +44,18 @@ function Form(props) {
   }
 
   async function getVisitorInfo() {
-
-    console.log(process.env.REACT_APP_FATEC_API_URL)
-
     const { data } = await api.get(`/user/${cpf}`);
-
     if(data) {
       setName(data[0].nome);
       setTel(data[0].telefone);
       setEmail(data[0].email);
       setBtnName('Acessar');
+      setIsDisabled(true);
     }
   }
 
   async function getStudentInfo() {
     const { data } = await api.get(`/student/${ra}`);
-    console.log(data)
     if(data) {
       setName(data[0].nome);
       setTel(data[0].telefone);
@@ -66,6 +63,7 @@ function Form(props) {
       setCurso(data[0].descricao);
       setPeriodo(data[0].semestre);
       setBtnName('Acessar');
+      setIsDisabled(true);
     }
   }
 
@@ -75,7 +73,7 @@ function Form(props) {
         
         {props.user == 1 ?
           <IMaskInput
-            mask="000000000-0/SP"
+            mask="0000000000000"
             placeholder="RA: "
             value={ra} onChange={e => setRa(e.target.value)}
             required
@@ -89,18 +87,19 @@ function Form(props) {
             onBlur={getVisitorInfo}
 
           />}
-        <input type="text" placeholder='Nome: ' value={name} onChange={e => setName(e.target.value)} required />
+        <input type="text" placeholder='Nome: ' value={name} onChange={e => setName(e.target.value)} required disabled={isDisabled} />
         {props.user == 1 ? <>
-          <input type="text" placeholder='Curso: ' value={curso} onChange={e => setCurso(e.target.value)} required />
-          <input type="text" placeholder='Período: ' value={periodo} onChange={e => setPeriodo(e.target.value)} required /> </> : <></>
+          <input type="text" placeholder='Curso: ' value={curso} onChange={e => setCurso(e.target.value)} required disabled={isDisabled}/>
+          <input type="text" placeholder='Período: ' value={periodo} onChange={e => setPeriodo(e.target.value)} required disabled={isDisabled}/> </> : <></>
         }
         <IMaskInput
           mask="(00) 00000-0000"
           placeholder="Telefone:"
           value={tel} onChange={e => setTel(e.target.value)}
           required
+          disabled={isDisabled}
         />
-        <input type="email" placeholder='Email: ' value={email} onChange={e => setEmail(e.target.value)} required />
+        <input type="email" placeholder='Email: ' value={email} onChange={e => setEmail(e.target.value)} required disabled={isDisabled}/>
         <div className="container-button">
           <button onClick={createUser}>{btnName}</button>
           <Link to='/'><button>Cancelar</button></Link>
