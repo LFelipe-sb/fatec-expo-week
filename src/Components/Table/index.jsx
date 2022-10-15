@@ -18,8 +18,30 @@ function Index(props) {
         getEvents();
     }, []);
 
-    function handleScheduling() {
+    async function handleScheduling(e) {
         const UniqueSelectedEvents = selectedEvents.filter((item, i) => selectedEvents.indexOf(item) === i);
+
+        e.preventDefault();
+    
+        try {
+            const data = {
+                eventId: UniqueSelectedEvents, 
+                userId: sessionStorage.getItem('userId')
+            }
+
+            await api.post('/schedule', data);
+            
+            tempUser = allEvents.map((event) => {
+                setSelectedEvents([]);
+                return {...event, isChecked: false}
+            });
+            setAllEvents(tempUser)
+
+            alert('Pronto! Agora você poderá ir aos eventos selecionados.');
+
+        }catch (err) {
+            alert(`Houve um erro: ${err}`)
+        }
     }
 
     function handleChange(e) {
