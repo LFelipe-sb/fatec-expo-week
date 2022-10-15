@@ -4,7 +4,7 @@ import Tabela from '../../Components/Table/index.jsx';
 function Checkout() {
     return (
         <div>
-            <Tabela title='Estande:----------' title2='Baixas a considerar' colum2='CPF/RA' colum3='Nome' />
+            <Tabela check={1} colum2='Nome' colum3='E-mail' />
         </div>
     )
 }

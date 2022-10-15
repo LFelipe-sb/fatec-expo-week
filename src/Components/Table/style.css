@@ -6,6 +6,28 @@
     border-radius: 0.625rem;
 }
 
+.cointaner-table .title-table {
+    margin: .5em 0;
+    color: #000;
+}
+
+.cointaner-table .section-input-buscar {
+    margin: 1.5em 0;
+    width: 95%;
+    text-align: end;
+}
+
+.input-buscar{
+    height: 2em;
+    border: 1px solid #000;
+    border-radius: 0.3rem;
+    background-color: #D9D9D9;
+}
+
+.input-buscar:focus{
+outline: none;
+}
+
 .table {
     margin: 1.5em auto 0 auto;
     width: 90%;
@@ -16,16 +38,13 @@
     border-collapse: collapse;
 }
 
-.table th, td{
+.table th,
+td {
     padding: 5px 0;
     border: 1px solid #000;
 }
 
-.table .colum1{
-    width: 15%;
-}
-
-.buttons-table{
+.buttons-table {
     margin: 1.5em 1.8em;
     width: 30%;
     padding: 0.8em;

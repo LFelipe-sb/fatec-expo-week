@@ -14,7 +14,7 @@ function Index(props) {
 
     useEffect(() => {
         async function getEvents() {
-            const {data} = await api.get('/events');
+            const { data } = await api.get('/events');
             setAllEvents(data);
         }
         getEvents();
@@ -25,7 +25,7 @@ function Index(props) {
 
         e.preventDefault();
 
-        if(!uniqueSelectedEvents.length) {
+        if (!uniqueSelectedEvents.length) {
             toast.warning('Escolha algum evento para salvar!', {
                 position: "top-center",
                 autoClose: 3500,
@@ -38,18 +38,18 @@ function Index(props) {
             });
             return;
         }
-    
+
         try {
             const data = {
-                eventId: uniqueSelectedEvents, 
+                eventId: uniqueSelectedEvents,
                 userId: sessionStorage.getItem('userId')
             }
 
             await api.post('/schedule', data);
-            
+
             tempUser = allEvents.map((event) => {
                 setSelectedEvents([]);
-                return {...event, isChecked: false}
+                return { ...event, isChecked: false }
             });
             setAllEvents(tempUser);
 
@@ -64,7 +64,7 @@ function Index(props) {
                 theme: "light",
             });
 
-        }catch (err) {
+        } catch (err) {
             toast.error(`Houve um erro: ${err}`, {
                 position: "top-center",
                 autoClose: 3500,
@@ -79,24 +79,24 @@ function Index(props) {
     }
 
     function handleChange(e) {
-        const {name, checked} = e.target;
-         if(name === 'allSelected') {
-            if(checked) {
+        const { name, checked } = e.target;
+        if (name === 'allSelected') {
+            if (checked) {
                 tempUser = allEvents.map((event) => {
                     selectedEvents.push(event.id_evento.toString());
-                    return {...event, isChecked: checked}
+                    return { ...event, isChecked: checked }
                 });
             } else {
                 tempUser = allEvents.map((event) => {
                     setSelectedEvents([]);
-                    return {...event, isChecked: checked}
+                    return { ...event, isChecked: checked }
                 });
             }
             setAllEvents(tempUser)
         } else {
-            let tempUser = allEvents.map((event) => event.id_evento == name ? {...event, isChecked: checked} : event);
+            let tempUser = allEvents.map((event) => event.id_evento == name ? { ...event, isChecked: checked } : event);
             setAllEvents(tempUser);
-            if(checked && name !== 'allSelected') {
+            if (checked && name !== 'allSelected') {
                 selectedEvents.push(name);
             } else {
                 selectedEvents.splice(selectedEvents.indexOf(name), 1);
@@ -104,24 +104,38 @@ function Index(props) {
         };
     };
 
+    const [buscar, setBuscar] = useState([]);
+    useEffect(() => {
+        const { data } = api.get('/user');
+        filter((data) => data.startsWith(buscar.toLowerCase()));
+    });
+
     return (
         <div className='cointaner-table'>
-            <section>
-                <h3>{props.title}</h3>
-                <h3>{props.title2}</h3>
-            </section>
+            {props.check == 1 ?
+                <div>
+                    <h3 className='title-table'>Estande:----------</h3>
+                    <h3 className='title-table'>Baixas a considerar</h3>
+                    <section className='section-input-buscar'>
+
+                        <input className='input-buscar' type='text' placeholder='Buscar...' value={buscar} onChange={(e) => setBuscar(e.target.value)} />
+                    </section>
+                </div>
+                :
+                <p></p>
+            }
             <table className='table'>
                 <thead>
-                    <th className='colum1'><img src={Check} /></th>
+                    <th><img src={Check} /></th>
                     <th>{props.colum2}</th>
                     <th>{props.colum3}</th>
                 </thead>
                 <tbody>
                     <tr>
                         <td>
-                            <input 
-                                type='checkbox' 
-                                className='checkbox-table' 
+                            <input
+                                type='checkbox'
+                                className='checkbox-table'
                                 name='allSelected'
                                 checked={allEvents.filter((event) => event.isChecked !== true).length < 1}
                                 onChange={handleChange}
@@ -131,12 +145,12 @@ function Index(props) {
                         <td>Selecionar Todos</td>
                     </tr>
                     {
-                        allEvents.map((event) => 
+                        allEvents.map((event) =>
                             <tr key={event.id_evento}>
                                 <td>
-                                    <input 
-                                        type='checkbox' 
-                                        className='checkbox-table' 
+                                    <input
+                                        type='checkbox'
+                                        className='checkbox-table'
                                         name={event.id_evento}
                                         checked={event.isChecked}
                                         onChange={handleChange}
@@ -145,8 +159,8 @@ function Index(props) {
                                 <td>{event.id_evento}</td>
                                 <td>{event.descricao}</td>
                             </tr>
-                        )                        
-                    }                    
+                        )
+                    }
                 </tbody>
             </table>
             <button className='buttons-table' onClick={handleScheduling}>Salvar</button>
