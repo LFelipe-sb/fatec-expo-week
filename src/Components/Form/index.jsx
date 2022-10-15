@@ -15,6 +15,7 @@ function Form(props) {
   const [cpf, setCpf] = useState(null);
   const [btnName, setBtnName] = useState('Cadastrar');
   const [isDisabled, setIsDisabled] = useState(false);
+  const [terms, setTerms] = useState(false);
 
   const navigate = useNavigate();
 
@@ -27,8 +28,24 @@ function Form(props) {
       }
 
       if(btnName === 'Acessar') {
+        setTerms(true);
         navigate("/visita-palestra");
       } else {
+
+        if(!terms) {
+          toast.warning('É preciso aceitar os termos para avançar!', {
+            position: "top-center",
+            autoClose: 3500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        return;
+        }
+        
         await api.post('/user', data);
 
         toast.success(`Usuário ${name} cadastrado com sucesso!`, {
@@ -90,6 +107,11 @@ function Form(props) {
     }
   }
 
+  function handleChange(e) {
+    const {checked} = e.target;
+    setTerms(checked);
+  }
+
   return (
     <div className="container-form">
       <form>
@@ -123,6 +145,23 @@ function Form(props) {
           disabled={isDisabled}
         />
         <input type="email" placeholder='Email: ' value={email} onChange={e => setEmail(e.target.value)} required disabled={isDisabled}/>
+
+        {props.user == 0 && btnName == 'Cadastrar' ?
+          <div className='use-term'>
+            <div className='accept-terms'>
+              <label>
+                <input 
+                  type='checkbox' 
+                  className='checkbox-table' 
+                  name='use-terms'
+                  onChange={handleChange}
+                /> Aceitar os termos
+              </label>              
+            </div> 
+            <span onClick={() => alert('Construindo')}>Visualizar termos de uso e privacidade</span>
+          </div>: <></>
+          } 
+
         <div className="container-button">
           <button onClick={createUser}>{btnName}</button>
           <Link to='/'><button>Cancelar</button></Link>

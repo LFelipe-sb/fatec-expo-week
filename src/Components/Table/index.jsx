@@ -21,11 +21,11 @@ function Index(props) {
     }, []);
 
     async function handleScheduling(e) {
-        const UniqueSelectedEvents = selectedEvents.filter((item, i) => selectedEvents.indexOf(item) === i);
+        const uniqueSelectedEvents = selectedEvents.filter((item, i) => selectedEvents.indexOf(item) === i);
 
         e.preventDefault();
 
-        if(!!UniqueSelectedEvents) {
+        if(!uniqueSelectedEvents.length) {
             toast.warning('Escolha algum evento para salvar!', {
                 position: "top-center",
                 autoClose: 3500,
@@ -41,7 +41,7 @@ function Index(props) {
     
         try {
             const data = {
-                eventId: UniqueSelectedEvents, 
+                eventId: uniqueSelectedEvents, 
                 userId: sessionStorage.getItem('userId')
             }
 
