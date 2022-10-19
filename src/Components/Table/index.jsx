@@ -10,12 +10,20 @@ function Index(props) {
 
     const [selectedEvents, setSelectedEvents] = useState([]);
     const [allEvents, setAllEvents] = useState([]);
+    const [filterItem, setFilterItem] = useState('');
     let tempUser;
 
     useEffect(() => {
         async function getEvents() {
-            const { data } = await api.get('/events');
-            setAllEvents(data);
+
+            if(props.check == 1) {
+                const { data } = await api.get('/checkout');
+                setAllEvents(data);
+            } else {
+                const { data } = await api.get('/events');
+                setAllEvents(data);
+            }
+
         }
         getEvents();
     }, []);
@@ -104,36 +112,66 @@ function Index(props) {
         };
     };
 
-    const [user, setUser] = useState('');
-    const [buscar, setBuscar] = useState('');
-    async function getUser() {
-        const { data } = await api.get('/user');
-        setUser(data);
-    }
-    getUser();
+    async function handleCheckout(e) {
+        e.preventDefault();
 
+        if (!selectedEvents.length) {
+            toast.warning('Escolha algum participante para salvar!', {
+                position: "top-center",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
+
+        try {
+            const data = {
+                code: allEvents[0].id_evento,
+                person: selectedEvents
+            }
+
+            await api.put('/checkout', data);
+
+            tempUser = allEvents.map((event) => {
+                setSelectedEvents([]);
+                return { ...event, isChecked: false }
+            });
+            setAllEvents(tempUser);
+
+            window.location.reload(true);
+
+        } catch (err) {
+            toast.error(`Houve um erro: ${err}`, {
+                position: "top-center",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    }
 
     return (
         <div className='cointaner-table'>
             {props.check == 1 ?
                 <div>
-                    <h3 className='title-table'>Estande:----------</h3>
+                    <h3 className='title-table'>Estande: "{allEvents.length > 0 ? allEvents[0].descricao : 'Aguarde.' }"</h3>
                     <h3 className='title-table'>Baixas a considerar</h3>
-                    <section className='section-input-buscar'>
-                        {user.filter((user) => {
-                            if (buscar == '') {
-                                return user;
-                            } else if (user.toUpperCase().includes(buscar.toUpperCase())) {
-                                return user;
-                            }
-                        }).map((buscar) =>
-                            <input className='input-buscar' type='text' placeholder='Buscar...' value={buscar} onChange={(e) => setBuscar(e.target.value)} />
-                        )}
-                    </section>
                 </div>
                 :
-                <p></p>
+                <></>
             }
+            <section className='section-input-buscar'>
+                <input className='input-buscar' type='text' placeholder='Buscar...' onChange={(e) => setFilterItem(e.target.value)} />
+            </section>
             <table className='table'>
                 <thead>
                     <th><img src={Check} /></th>
@@ -147,33 +185,49 @@ function Index(props) {
                                 type='checkbox'
                                 className='checkbox-table'
                                 name='allSelected'
-                                checked={allEvents.filter((event) => event.isChecked !== true).length < 1}
+                                checked={allEvents.length > 0 ? allEvents.filter((event) => event.isChecked !== true).length < 1 : false}
                                 onChange={handleChange}
+                                disabled={filterItem ? true : false}
                             />
                         </td>
                         <td>-</td>
                         <td>Selecionar Todos</td>
                     </tr>
                     {
-                        allEvents.map((event) =>
+                        allEvents.length === 0 ? '' : 
+                        allEvents.filter((val) => {
+                            if(props.check == 1) {
+                                if(filterItem === '') {
+                                    return val;
+                                } else if(val.nome.toUpperCase().includes(filterItem.toUpperCase())) {
+                                    return val;
+                                }
+                            } else {
+                                if(filterItem === '') {
+                                    return val;
+                                } else if(val.descricao.toUpperCase().includes(filterItem.toUpperCase())) {
+                                    return val;
+                                }                                
+                            }                            
+                        }).map((event) =>
                             <tr key={event.id_evento}>
                                 <td>
                                     <input
                                         type='checkbox'
                                         className='checkbox-table'
-                                        name={event.id_evento}
+                                        name={props.check == 1 ? event.id_pessoa : event.id_evento}
                                         checked={event.isChecked}
                                         onChange={handleChange}
                                     />
                                 </td>
-                                <td>{event.id_evento}</td>
-                                <td>{event.descricao}</td>
+                                <td>{props.check == 1 ? event.nome :  event.id_evento}</td>
+                                <td>{props.check == 1 ? event.email : event.descricao}</td>
                             </tr>
                         )
-                    }
+                    } 
                 </tbody>
             </table>
-            <button className='buttons-table' onClick={handleScheduling}>Salvar</button>
+            <button className='buttons-table' onClick={props.check == 1 ? handleCheckout : handleScheduling}>Salvar</button>
             <Link to='/'><button className='buttons-table'>Cancelar</button></Link>
         </div>
     )

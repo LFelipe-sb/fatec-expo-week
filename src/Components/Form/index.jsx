@@ -43,7 +43,6 @@ function Form(props) {
             progress: undefined,
             theme: "light",
           });
-          console.log(props.user == 1, !ra, !email, !curso, !semestre)
           return;
         }
         if(props.user == 0 && !cpf || !email || !name || !tel) {
