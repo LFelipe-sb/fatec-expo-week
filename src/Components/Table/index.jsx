@@ -104,11 +104,14 @@ function Index(props) {
         };
     };
 
-    const [buscar, setBuscar] = useState([]);
-    useEffect(() => {
-        const { data } = api.get('/user');
-        filter((data) => data.startsWith(buscar.toLowerCase()));
-    });
+    const [user, setUser] = useState('');
+    const [buscar, setBuscar] = useState('');
+    async function getUser() {
+        const { data } = await api.get('/user');
+        setUser(data);
+    }
+    getUser();
+
 
     return (
         <div className='cointaner-table'>
@@ -117,8 +120,15 @@ function Index(props) {
                     <h3 className='title-table'>Estande:----------</h3>
                     <h3 className='title-table'>Baixas a considerar</h3>
                     <section className='section-input-buscar'>
-
-                        <input className='input-buscar' type='text' placeholder='Buscar...' value={buscar} onChange={(e) => setBuscar(e.target.value)} />
+                        {user.filter((user) => {
+                            if (buscar == '') {
+                                return user;
+                            } else if (user.toUpperCase().includes(buscar.toUpperCase())) {
+                                return user;
+                            }
+                        }).map((buscar) =>
+                            <input className='input-buscar' type='text' placeholder='Buscar...' value={buscar} onChange={(e) => setBuscar(e.target.value)} />
+                        )}
                     </section>
                 </div>
                 :
