@@ -5,6 +5,8 @@ import { IMaskInput } from "react-imask";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import Terms from '../Terms/index.jsx';
+
 function Form(props) {
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
@@ -16,6 +18,7 @@ function Form(props) {
   const [btnName, setBtnName] = useState('Cadastrar');
   const [isDisabled, setIsDisabled] = useState(false);
   const [terms, setTerms] = useState(false);
+  const [loadModal, setLoadModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -154,6 +157,10 @@ function Form(props) {
     setTerms(checked);
   }
 
+  function showModal(){
+    setLoadModal(true);
+  }
+
   return (
     <div className="container-form">
       <form>
@@ -201,7 +208,8 @@ function Form(props) {
                 /> Aceitar os termos
               </label>              
             </div> 
-            <span onClick={() => alert('Construindo')}>Visualizar termos de uso e privacidade</span>
+            {loadModal && <Terms isOpen={loadModal} />}
+            <span onClick={() => showModal()}>Visualizar termos de uso e privacidade</span>
           </div>: <></>
           } 
 
