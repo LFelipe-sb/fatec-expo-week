@@ -18,7 +18,7 @@ function Index(props) {
         async function getEvents() {
 
             if(props.check == 1) {
-                const { data } = await api.get('/checkout');
+                const { data } = await api.get(`/checkout/${sessionStorage.getItem("eventId")}`);
                 setAllEvents(data);
             } else {
                 const { data } = await api.get('/events');
@@ -164,7 +164,7 @@ function Index(props) {
         <div className='cointaner-table'>
             {props.check == 1 ?
                 <div>
-                    <h3 className='title-table'>Estande: "{allEvents.length > 0 ? allEvents[0].descricao : 'Aguarde.' }"</h3>
+                    <h3 className='title-table'>Estande: "{allEvents.length > 0 ? allEvents[0].descricao : 'Não há exibições' }"</h3>
                     <h3 className='title-table'>Baixas a considerar</h3>
                 </div>
                 :
@@ -178,8 +178,13 @@ function Index(props) {
                     <th><img src={Check} /></th>
                     <th>{props.colum2}</th>
                     <th>{props.colum3}</th>
-                    <th>{props.colum4}</th>
-                    <th>{props.colum5}</th>
+                    {
+                        props.check == 1 ? '' : 
+                        <>
+                            <th>{props.colum4}</th>
+                            <th>{props.colum5}</th>
+                        </>
+                    }                    
                 </thead>
                 <tbody>
                     <tr>
@@ -228,15 +233,22 @@ function Index(props) {
                                 </td>
                                 <td>{props.check == 1 ? event.nome :  event.id_evento}</td>
                                 <td>{props.check == 1 ? event.email : event.descricao}</td>
-                                <td>{props.check == 1 ? event.email : formatDate(event.data_evento)}</td>
-                                <td>{props.check == 1 ? event.email : event.tipo}</td>
+                                {
+                                    props.check == 1 ? '' : 
+                                    <>
+                                        <td>{props.check == 1 ? event.email : formatDate(event.data_evento)}</td>
+                                        <td>{props.check == 1 ? event.email : event.tipo}</td>
+                                    </>
+                                }
                             </tr>
                         )
                     } 
                 </tbody>
             </table>
             <button className='buttons-table' onClick={props.check == 1 ? handleCheckout : handleScheduling}>Salvar</button>
+            {props.check != 1 ?
             <Link to='/'><button className='buttons-table'>Cancelar</button></Link>
+            : ''}
         </div>
     )
 }

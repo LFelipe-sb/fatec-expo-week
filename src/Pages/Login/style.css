@@ -33,3 +33,7 @@
     background: #000;
     color: #fff;
 }
+
+input {
+    padding: 8px;
+}
