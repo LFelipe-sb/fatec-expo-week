@@ -8,7 +8,7 @@ function VisitaPalestra() {
             <p>Bem vindo(a): <b>{sessionStorage.getItem("userName")}</b></p>
 
             <h3>Quais seus interesses?</h3>
-            <Tabela colum2='Código' colum3='Descrição' />
+            <Tabela colum2='Código' colum3='Descrição' colum4='Quando?' colum5='Tipo'/>
         </div>
     )
 }

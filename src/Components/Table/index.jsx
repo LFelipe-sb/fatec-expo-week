@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import './style.css';
 
 import { toast } from 'react-toastify';
+import { formatDate } from '../../Utils/formatDate';
 
 function Index(props) {
 
@@ -177,10 +178,12 @@ function Index(props) {
                     <th><img src={Check} /></th>
                     <th>{props.colum2}</th>
                     <th>{props.colum3}</th>
+                    <th>{props.colum4}</th>
+                    <th>{props.colum5}</th>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
+                        <td style={{backgroundColor: '#AAA'}}>
                             <input
                                 type='checkbox'
                                 className='checkbox-table'
@@ -190,8 +193,11 @@ function Index(props) {
                                 disabled={filterItem ? true : false}
                             />
                         </td>
-                        <td>-</td>
-                        <td>Selecionar Todos</td>
+                        <td style={{backgroundColor: '#AAA'}}>-</td>
+                        <td 
+                            colSpan={3} 
+                            style={{backgroundColor: '#AAA'}}
+                        >Selecionar Todos</td>
                     </tr>
                     {
                         allEvents.length === 0 ? '' : 
@@ -222,6 +228,8 @@ function Index(props) {
                                 </td>
                                 <td>{props.check == 1 ? event.nome :  event.id_evento}</td>
                                 <td>{props.check == 1 ? event.email : event.descricao}</td>
+                                <td>{props.check == 1 ? event.email : formatDate(event.data_evento)}</td>
+                                <td>{props.check == 1 ? event.email : event.tipo}</td>
                             </tr>
                         )
                     } 
