@@ -6,7 +6,7 @@ import CasdastroVisitante from './Pages/Cadastro/CadastroVisitante/index.jsx';
 import VisitaPalestra from './Pages/Check/VisitaPalestra';
 import Checkout from './Pages/Check/Checkout.jsx';
 import Login from './Pages/Login/index.jsx';
-
+import { ProtectedCheckout, ProtectedEvent } from './ProtectedRouter';
 import { ToastContainer } from 'react-toastify';
 
 import './App.css';
@@ -20,11 +20,15 @@ function App() {
         <Nav />
         <Routes>
           <Route path='/' element={<Main />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/cadastro-aluno' element={<CasdastroAluno />} />
           <Route path='/cadastro-visitante' element={<CasdastroVisitante />} />
-          <Route path='/visita-palestra' element={<VisitaPalestra />} />
-          <Route path='/checkout' element={<Checkout />} />
-          <Route path='/login' element={<Login />} />
+          <Route element={<ProtectedEvent/>}>
+            <Route path='/visita-palestra' element={<VisitaPalestra />} />
+          </Route>
+          <Route element={<ProtectedCheckout/>}>
+            <Route path='/checkout' element={<Checkout />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>
