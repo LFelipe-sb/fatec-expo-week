@@ -53,3 +53,25 @@ td {
     background: #000;
     color: #fff;
 }
+
+.cointaner-table h2 {
+    color: #000;
+}
+
+.search-toggle div {
+    display: flex;
+    width: 800px;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.toogle-content div{
+    width: 180px;
+}
+
+.search-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
