@@ -2,7 +2,7 @@
   appearance: none;
   width: 120px;
   height: 1px;
-  background-color: #787878;
+  background: linear-gradient(91deg, #498368, #58c2c7);
   border-radius: 50px;
   position: absolute;
   cursor: pointer;
@@ -33,7 +33,7 @@
 }
 
 .toggle:checked {
-  background: linear-gradient(91deg, #1112AB, #4B80F4);
+  background: linear-gradient(91deg, #6f6fab, #02143d);
 }
 
 .toggle:checked::before {
@@ -45,4 +45,49 @@
   content: "Agenda";
   color: #000;
   left: 35px;
+}
+
+@media screen and (max-width: 570px) {
+  .toggle {
+    width: 80px;
+  }
+
+  .toggle::after {
+    left: 1px;
+  }
+
+  .toggle:checked::after {
+    left: 5px;
+  }
+
+  .toggle:checked::before {
+    left: 50px;
+  }
+
+  .toggle::before {
+    left: 1px;
+  }
+}
+
+@media screen and (max-width: 510px) {
+  .toggle { /*Barra toggle*/
+    width: 140px;
+    margin-left: 50px;
+  }
+
+  .toggle::after { /*Texto eventos*/
+    left: 10px;
+  }
+
+  .toggle::before { /*Bullet eventos*/
+    left: 5px;
+  }
+
+  .toggle:checked::after { /*Texto agenda*/
+    left: 70px;
+  }
+
+  .toggle:checked::before { /*Bullet agenda*/
+    left: 108px;
+  }  
 }

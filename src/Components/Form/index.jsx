@@ -27,7 +27,7 @@ function Form(props) {
     
     try {
       const data = {
-        name, email, ra, cpf, curso, semestre, tel
+        name, email, ra, cpf, curso, semestre, tel, aceitaTermo: terms,
       }
 
       if(btnName === 'Acessar') {
