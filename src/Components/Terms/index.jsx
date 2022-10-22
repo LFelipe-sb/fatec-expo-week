@@ -35,8 +35,8 @@ function Index({ isOpen }) {
                 <p className='font-terms'>
                     <h4 className='title-terms'>Responsabilidade</h4>
                     É responsabilidade do usuário: <br />
-                    I)Fornecer dados atualizados, tais como cpf e e-mail; <br />
-                    II)Autenticidade nos dados fornecidos ao realizar cadastro;
+                    I) Fornecer dados atualizados, tais como cpf e e-mail; <br />
+                    II) Autenticidade nos dados fornecidos ao realizar cadastro;
                 </p>
                 <button className='btn-modal' onClick={(closeModal)}>Ok</button>
             </Modal>

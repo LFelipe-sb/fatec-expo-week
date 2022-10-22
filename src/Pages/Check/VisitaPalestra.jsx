@@ -5,9 +5,7 @@ import './style.css';
 function VisitaPalestra() {
     return (
         <div>
-            <p>Bem vindo(a): <b>{sessionStorage.getItem("userName")}</b></p>
-
-            <h3>Quais seus interesses?</h3>
+            <h2>Bem vindo(a):</h2> <h1>{sessionStorage.getItem("userName")}</h1>
             <Tabela colum2='Código' colum3='Descrição' colum4='Quando?' colum5='Tipo'/>
         </div>
     )
