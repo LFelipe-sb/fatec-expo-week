@@ -20,3 +20,15 @@
     width: 5%;
   }
 }
+
+@media screen and (max-width: 420px) {  
+  .container-button button{
+    min-width: 80px;
+    margin-bottom: 0;
+  }
+
+  .container-cadastro {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}

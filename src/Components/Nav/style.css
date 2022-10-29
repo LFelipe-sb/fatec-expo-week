@@ -3,21 +3,20 @@
   display: flex;
   justify-content: space-between;
   padding: 0.625rem;
-}
-
-.container-nav :is(.fatec) {
-  width: 10%;
-  display: flex;
-  justify-content: center;
   align-items: center;
 }
 
-.container-nav :is(.fatec-img) {
-  width: 100%;
+.apoio {
+  display: flex;
+  font-weight: bold;
 }
 
-.container-nav :is(.cps) {
-  width: 10%;
+.container-nav :is(.fatec-img) {
+  width: 150px;
+}
+
+.container-nav :is(.etec-embu) {
+  width: 100px;
 }
 
 .login {
@@ -37,8 +36,37 @@ a {
   text-decoration: none;
 }
 
-@media screen and (min-width: 769px) {
-  .container-nav :is(.fatec, .cps) {
-    width: 5%;
+@media screen and (max-width: 500px) {  
+  .container-nav :is(.fatec-img) {
+    width: 80px;
+  }
+  
+  .container-nav :is(.etec-embu) {
+    width: 60px;
+  }
+
+  .apoio {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 320px) {  
+  .container-nav {
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+
+  }
+
+  .container-nav :is(.fatec-img), .container-nav :is(.etec-embu) {
+    width: 50%;
+  }
+
+  .apoio {
+    align-items: center;
+    margin: 15px auto 0 auto;
+  }
+
+  .container-main {
+    padding: 15px;
   }
 }

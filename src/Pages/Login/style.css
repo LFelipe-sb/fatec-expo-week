@@ -37,3 +37,10 @@
 input {
     padding: 8px;
 }
+
+@media screen and (max-width: 320px) {  
+    .buttons-login {
+        margin: 15px;
+        width: 100px;
+    }
+}

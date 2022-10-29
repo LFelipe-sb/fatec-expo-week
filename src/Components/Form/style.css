@@ -57,3 +57,14 @@
     height: 20px;
     margin: 10px;
 }
+
+@media screen and (max-width: 420px) {  
+    .container-form {
+        margin: 10px auto 30px auto;
+    }
+
+    .voltar {
+        display: flex;
+        justify-content: flex-start
+    }
+}

@@ -57,14 +57,14 @@ outline: none;
 
 .table-wrapper {
     max-height: 500px;
-    min-width: 250px;
+    min-width: 230px;
     overflow: auto;
-    width: 90%;
+    width: 80%;
     margin: 0 auto;
 }
 
 .table th, td {
-    padding: 5px 0;
+    padding: 5px 8px;
     border: 1px solid #000;
 }
 
@@ -119,6 +119,10 @@ outline: none;
     color: #CCC;
 }
 
+.btn-modal-confirm {
+    min-width: 100px;
+}
+
 @media screen and (max-width: 750px) {  
     .choose-table button {
         white-space: normal;
@@ -132,7 +136,18 @@ outline: none;
     }
 
     .choose-table button {
-        width: 80%;
+        width: 90%;
         margin: 8px auto;
     }    
+}
+
+@media screen and (max-width: 420px) {  
+    .section-input-buscar {
+      flex-direction: column;
+    } 
+
+    .font-terms input {
+        width: 100%;
+        margin-left: -10px;
+    }
 }
