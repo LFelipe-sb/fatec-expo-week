@@ -27,15 +27,17 @@
 }
 
 .cointaner-table .section-input-buscar {
-    margin: 1.5em 0;
+    margin: 8px;
     width: 95%;
-    text-align: end;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .input-buscar{
     height: 2em;
     border: 1px solid #000;
-    border-radius: 0.3rem;
+    border-radius: 0.5rem;
     background-color: #D9D9D9;
 }
 
@@ -44,7 +46,7 @@ outline: none;
 }
 
 .table {
-    margin: 1.5em auto 0 auto;
+    margin: 0 auto;
     width: 100%;
     background-color: #D9D9D9;
     border-radius: 0.400rem;
@@ -59,7 +61,6 @@ outline: none;
     overflow: auto;
     width: 90%;
     margin: 0 auto;
-    padding: 10px;
 }
 
 .table th, td {
@@ -77,25 +78,28 @@ outline: none;
     color: #fff;
 }
 
-.cointaner-table h2 {
+.choose-table {
+    display: flex;
+    justify-content: center;
+}
+
+.choose-table button {
+    padding: 8px 20px;
+    margin: 5px;
+    border-bottom: none;
+    white-space: nowrap;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.choose-table button:hover {
+    background-color: #CCC;
     color: #000;
 }
+  
 
-.search-toggle div {
-    display: flex;
-    width: 800px;
-    justify-content: center;
-    align-items: center;    
-}
-
-.toogle-content div{
-    width: 180px;
-}
-
-.search-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.cointaner-table h2 {
+    color: #000;
 }
 
 .btn-confirm-code {
@@ -110,44 +114,25 @@ outline: none;
     cursor: pointer;
 }
 
-@media screen and (min-width: 700px) and (max-width: 1000px){
-    .search-toggle {
+.active {
+    background-color: #333;
+    color: #CCC;
+}
+
+@media screen and (max-width: 750px) {  
+    .choose-table button {
+        white-space: normal;
+        width: 28%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .choose-table {
         flex-direction: column;
     }
 
-    .toogle-content {
-        margin: 20px 0;
-    }
+    .choose-table button {
+        width: 80%;
+        margin: 8px auto;
+    }    
 }
-
-@media screen and (max-width: 700px) {
-    .search-toggle {
-        flex-direction: column;
-    }
-
-    .toogle-content {
-        max-width: 100%;
-    }
-}
-
-@media screen and (max-width: 700px) {
-    .toogle-content {
-        max-width: 100%;
-        margin-bottom: 25px;
-    }
-}
-
-@media screen and (max-width: 420px) {
-    .toogle-content div h3 {
-      display: none;
-    }
-
-    .toogle-content {
-        margin-bottom: 60px;
-        margin-left: -20px;
-    }
-
-    .table-wrapper {
-        min-width: 200px;
-    }
-  }

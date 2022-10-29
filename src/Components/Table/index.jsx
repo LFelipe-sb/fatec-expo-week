@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import api from '../../Service/api'
 import Check from '../../Images/icon-check.png';
 import { Link } from 'react-router-dom';
-import Toggle from '../Toggle';
 import Modal from 'react-modal';
 import './style.css';
 
@@ -14,7 +13,7 @@ function Index(props) {
     const [selectedEvents, setSelectedEvents] = useState([]);
     const [allEvents, setAllEvents] = useState([]);
     const [filterItem, setFilterItem] = useState('');
-    const [toggle, setToggle] = useState(true);
+    const [toggle, setToggle] = useState('Eventos Abertos');
     const [isOpen, setIsOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState([]);
     const [confirmCode, setConfirmCode] = useState(null);
@@ -28,15 +27,19 @@ function Index(props) {
                 const { data } = await api.get(`/checkout/${sessionStorage.getItem("eventId")}`);
                 setAllEvents(data);
             } else {
-                if(toggle) {
+                if(toggle === 'Eventos Abertos') {
                     setAllEvents([]);
                     const { data } = await api.get(`/events/${sessionStorage.getItem("userId")}`);
                     setAllEvents(data);
-                } else {
+                } else if(toggle === 'Minha Agenda') {
                     setAllEvents([]);
                     const { data } = await api.get(`/schedule/${sessionStorage.getItem("userId")}`);
                     setAllEvents(data);
-                }       
+                } else {
+                    setAllEvents([]);
+                    const { data } = await api.get(`/schedule/viewed-events/${sessionStorage.getItem("userId")}`);
+                    setAllEvents(data);
+                }    
             }     
         }
         getEvents();
@@ -50,7 +53,6 @@ function Index(props) {
                 cod_validacao: confirmCode
             }
 
-            console.log(confirmCode)
             if(!confirmCode) {
                 toast.warning('Por favor, informe o código de validação', {
                     position: "top-center",
@@ -91,6 +93,7 @@ function Index(props) {
                 progress: undefined,
                 theme: "light",
             });
+            closeModal();
         } catch(err) {
             
             if(err.response?.status === 400) {
@@ -263,41 +266,56 @@ function Index(props) {
     return (
         <>
             <div className='cointaner-table'>
-                {toggle ? <h2>Eventos Disponíveis</h2> : <h2>Meus Eventos</h2>}
-                {props.check == 1 ?
-                    <div>
-                        <h3 className='title-table'>Estande: "{allEvents.length > 0 ? allEvents[0].descricao : 'Não há exibições' }"</h3>
-                        <h3 className='title-table'>Baixas a considerar</h3>
-                    </div>
-                    :
-                    <></>
-                }
                 <section className='section-input-buscar'>
-                    <div className='search-toggle'>
-                        <div className='toogle-content'>
-                            <div><h3>Eventos Abertos</h3></div>
-                            <div onClick={() => setToggle(!toggle)}><Toggle /></div>
-                            <div><h3>Minha Agenda</h3></div>
-                        </div>  
-                        <input className='input-buscar' type='text' placeholder='Buscar...' onChange={(e) => { setFilterItem(e.target.value)
-                        console.log(filterItem)}} />
-                    </div>
+                    {props.check != 1 && toggle === 'Eventos Abertos' 
+                        ? <h2>Eventos Disponíveis</h2> 
+                        : props.check != 1 && toggle === 'Minha Agenda' 
+                            ? <h2>Meus Eventos</h2> 
+                            : props.check != 1 && toggle === 'Minhas Presenças'
+                                ? <h2>Presenças Confirmadas</h2>
+                                : ''}
+                    {props.check == 1 ?
+                        <div>
+                            <h3 className='title-table'>Estande: "{allEvents.length > 0 ? allEvents[0].descricao : 'Não há exibições' }"</h3>
+                            <h3 className='title-table'>Baixas a considerar</h3>
+                        </div>
+                        :
+                        <></>
+                    }
+                    <input className='input-buscar' type='text' placeholder='Buscar...' onChange={(e) =>  setFilterItem(e.target.value)} />
                 </section>
+                { props.check != 1 ?
+                    <div className='choose-table'>
+                        <button                     
+                            className={toggle === 'Eventos Abertos' ? 'active' : ''}    
+                            value='Eventos Abertos' 
+                            onClick={(e) => setToggle(e.target.value)}
+                        >Eventos Abertos</button>
+                        <button 
+                            className={toggle === 'Minha Agenda' ? 'active' : ''}    
+                            value='Minha Agenda'
+                            onClick={(e) => setToggle(e.target.value)}
+                        >Minha Agenda</button>
+                        <button 
+                            className={toggle === 'Minhas Presenças' ? 'active' : ''}    
+                            value='Minhas Presenças'
+                            onClick={(e) => setToggle(e.target.value)}
+                        >Minhas Presenças</button>
+                    </div> : '' }
                 <div class="table-wrapper">
                     <table className='table'>
                         <thead>
-                            <th><img src={Check} /></th>
-                            <th>{props.colum2}</th>
+                            {toggle !== 'Minhas Presenças' ? <th><img src={Check} /></th> : ''}
                             <th>{props.colum3}</th>
                             {
-                                props.check == 1 ? '' : 
+                                props.check == 1 ? <th>Nome:</th> : 
                                 <>
-                                    <th>{props.colum4}</th>
+                                    <th>{toggle === 'Minhas Presenças' ? 'Confirmado em:' : props.colum4}</th>
                                     {toggle ? <th>{props.colum5}</th> : ''}                                
                                 </>
                             }    
                             {
-                                toggle ? '' : 
+                                toggle !== 'Minha Agenda' ? '' : 
                                 <>
                                     <th>Inscrito em:</th>
                                     <th>Presença</th>
@@ -305,6 +323,7 @@ function Index(props) {
                             }                    
                         </thead>
                         <tbody>
+                        { toggle !== 'Minhas Presenças' ?
                             <tr>
                                 <td style={{backgroundColor: '#AAA'}}>
                                     <input
@@ -320,8 +339,8 @@ function Index(props) {
                                 <td 
                                     colSpan={5} 
                                     style={{backgroundColor: '#AAA'}}
-                                >Selecionar Todos</td>
-                            </tr>
+                                >Selecionar Todos</td> 
+                            </tr>: '' }
                             {
                                 allEvents.length === 0 ? '' : 
                                 allEvents.filter((val) => {
@@ -340,6 +359,7 @@ function Index(props) {
                                     }                            
                                 }).map((event) =>
                                     <tr key={event.id_evento}>
+                                        { toggle !== 'Minhas Presenças' ?
                                         <td>
                                             <input
                                                 type='checkbox'
@@ -347,29 +367,40 @@ function Index(props) {
                                                 name={props.check == 1 ? event.id_pessoa : event.id_evento}
                                                 checked={event.isChecked}
                                                 onChange={handleChange}
-                                            />
+                                            /> 
                                         </td>
-                                        <td>{props.check == 1 ? event.nome :  event.id_evento}</td>
+                                        : '' }
                                         <td>{props.check == 1 ? event.email : event.descricao}</td>
                                         {
-                                            props.check == 1 ? '' : 
+                                            props.check == 1 ? <td>{event.nome}</td> : 
                                             <>
-                                                <td>{props.check == 1 ? event.email : formatDate(event.data_evento)}</td>
+                                                <td>{
+                                                    props.check == 1 ? event.email 
+                                                    : toggle === 'Eventos Abertos'
+                                                    ? formatDate(event.data_evento)
+                                                        : toggle === 'Minha Agenda' 
+                                                        ? formatDate(event.data_evento)
+                                                            : formatDate(event.dt_verificacao)
+                                                }</td>
                                                 {toggle ? <td>{props.check == 1 ? event.email : toggle ? event.tipo : ''}</td> : ''}                                             
                                             </>
                                         }
                                         {
-                                            toggle == 1 ? '' : 
+                                            toggle !== 'Minha Agenda' ? '' : 
                                             <>
-                                                <td>{allEvents.length > 0 ? formatDate(event.dtcria) : 'kkkkkkkkk'}</td>
+                                                <td>{allEvents.length > 0 ? formatDate(event.dtcria) : ''}</td>
                                                 <td>
-                                                    <button 
-                                                        className="btn-confirm-code"
-                                                        onClick={() => {
-                                                            setIsOpen(true);
-                                                            setSelectedEvent(event);    
-                                                        }}>
-                                                    Código</button>
+                                                    {
+                                                        event.tipo === 'palestra' ? 
+                                                        <button 
+                                                            className="btn-confirm-code"
+                                                            onClick={() => {
+                                                                setIsOpen(true);
+                                                                setSelectedEvent(event);    
+                                                            }}>
+                                                        Código</button>
+                                                        : 'Validar no estande'
+                                                    }
                                                 </td>
                                             </> 
                                         }
@@ -379,7 +410,13 @@ function Index(props) {
                         </tbody>
                     </table>
                 </div>
-                {allEvents.length === 0 ? <h4>Nenhum evento disponível no momento</h4> : ''}
+                {
+                allEvents.length === 0 && props.check != 1 
+                    ? <h4>Nenhum evento disponível no momento</h4> 
+                    : allEvents.length === 0 && props.check == 1 
+                        ? <h4>Não há presenças pendentes de confirmação para este evento</h4>
+                        : ''
+                }
                 <button className='buttons-table' onClick={props.check == 1 ? handleCheckout : handleScheduling}>Salvar</button>
                 {props.check != 1 ?
                 <Link to='/'><button className='buttons-table'>Cancelar</button></Link>
