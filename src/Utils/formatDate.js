@@ -7,6 +7,6 @@ export function formatDate(date) {
       locale: ptBR,
     }); 
   } catch(err) {
-    // alert('ssssssssssssss')
+    console.log(err);
   }
 }

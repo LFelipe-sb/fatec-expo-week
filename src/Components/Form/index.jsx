@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import Terms from '../Terms/index.jsx';
+import validator from "validator";
+import { cpf as validateCpf } from 'cpf-cnpj-validator'; 
 
 function Form(props) {
   const [name, setName] = useState(null);
@@ -24,6 +26,35 @@ function Form(props) {
 
   async function createUser(event) {
     event.preventDefault();
+
+    const isCpf = validateCpf.isValid(cpf);
+    const isEmail = validator.isEmail(email);
+
+    if(!isCpf) {
+      return toast.warning(`O CPF informado não é valido`, {
+        position: "top-center",
+        autoClose: 3500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    if(!isEmail) {
+      return toast.warning(`O email informado não é valido`, {
+        position: "top-center",
+        autoClose: 3500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
     
     try {
       const data = {
@@ -110,6 +141,22 @@ function Form(props) {
   }
 
   async function getVisitorInfo() {
+
+    const isCpf = validateCpf.isValid(cpf);
+
+    if(!isCpf) {
+      return toast.warning(`O CPF informado não é valido`, {
+        position: "top-center",
+        autoClose: 3500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
     const { data } = await api.get(`/user/${cpf}`);
     if(data) {
       setName(data[0].nome);

@@ -48,6 +48,36 @@
   width: 100px;
 }
 
+.responsive-modal modal{
+  width: 20%;
+}
+
+.style-modal {
+  margin: auto;
+  margin-top: 2.5em;
+  padding: 1.5em 2em;
+  width: 45%;
+  overflow-y: scroll;
+  max-height: 80%;
+  border-radius: 10px;
+  border: 2px solid #000;
+  background-color: #FFF;
+  text-align: center;
+  top: 50px;
+  bottom: auto;
+}
+
+@media screen and (max-width: 1700px) {
+  .style-modal {
+    margin-top: 1em;
+    max-height: 90%;
+  }
+
+  .container-main :is(.card) {
+    padding: 2rem;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .container-main {
     padding: 25px;
@@ -56,6 +86,10 @@
   .container-main :is(.card) {
     padding: 2rem;
   }
+
+  .style-modal {
+    width: 60%;
+  }
 }
 
 @media screen and (max-width: 610px) {
@@ -63,18 +97,29 @@
     font-size: 1.5em;
   }
 
-  .logos-modal {
-    flex-direction: column;
-  }
-
   .logos-modal img {
     margin-bottom: 20px;
+  }
+
+  .style-modal {
+    width: 70%;
   }
 }
 
 @media screen and (max-width: 400px) {
   h1 {
-    font-size: 1em;
+    font-size: 1.2em;
     word-break: break-word;
+  }
+
+  .logos-modal {
+    flex-direction: column;
+    width: 60%;
+  }
+
+  .style-modal {
+    width: 200px;
+    height: 70%;
+    margin-top: 7em;
   }
 }

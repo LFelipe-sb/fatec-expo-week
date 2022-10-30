@@ -13,23 +13,7 @@ function Main() {
   function closeModal() {
     setIsOpen(false);
   }
-  const styleModal = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      borderRadius: "10px",
-      border: "2px solid #000",
-      width: "45%",
-      textAlign: "center",
-      maxHeight: "90%",
-      overflowY: "scroll",
-    }
-  }
-
+  
   return (
     <>
       <div className="container-main" >
@@ -40,11 +24,11 @@ function Main() {
             setIsOpen(true);
         }}>* Créditos</p>
       </div>
-      <div className='all-modal'>
+      <div className='all-modal responsive-modal'>
         <Modal
           isOpen={isOpen}
           onRequestClose={closeModal}
-          style={styleModal}
+          className='style-modal'
         >
           <div>
               <h1 className='title-thanks'>Agradecimentos</h1>
@@ -52,32 +36,37 @@ function Main() {
               
               <p>
                 <b>Fábio Brussolo</b> <br />
-                <i>Professor e Coordenador na Fatec Osasco. (Redes de Computadores).</i>
+                <i>Professor e Coordenador na Fatec Osasco. 
+                <br />(Redes de Computadores).</i>
               </p>
 
               <p> 
                 <b>Gabriel Müller</b> <br />
-                <i>Aluno na Etec de Embu. (Desenvolvimento de Sistemas).</i>
+                <i>Aluno na Etec de Embu. 
+                <br />(Desenvolvimento de Sistemas).</i>
               </p> 
 
               <p> 
                 <b>Gustavo Augusto Wustemberg</b> <br />
-                <i>Aluno na Etec de Embu. (Desenvolvimento de Sistemas).</i>
+                <i>Aluno na Etec de Embu. 
+                <br />(Desenvolvimento de Sistemas).</i>
               </p>
 
               <p>
                 <b>Laiza Sena</b> <br />
-                <i>Aluna na Etec de Embu. (Desenvolvimento de Sistemas).</i>
+                <i>Aluna na Etec de Embu. 
+                <br />(Desenvolvimento de Sistemas).</i>
               </p>
 
               <p>
                 <b>Luís Felipe Santos</b> <br />
-                <i>Professor na Etec de Embu. (Desenvolvimento de Sistemas).</i>
+                <i>Professor na Etec de Embu. 
+                <br />(Desenvolvimento de Sistemas).</i>
               </p>
 
               <p>
                 <b>Marcos Costa</b> <br />
-                <i>Professor e Coordenador na Etec de Embu e Professor na Fatec Osasco. (Desenvolvimento de Sistemas e Redes de Computadores).</i>
+                <i>Professor e Coordenador na Etec de Embu e Professor nas Fatecs Osasco e São Roque. <br />(Desenvolvimento de Sistemas e Redes de Computadores).</i>
               </p>
 
               <p>
@@ -87,7 +76,8 @@ function Main() {
 
               <p>
                 <b>Wesley de Sousa Batista</b> <br />
-                <i>Aluno na Fatec Osasco. (Redes de Computadores).</i>
+                <i>Aluno na Fatec Osasco. 
+                <br />(Redes de Computadores).</i>
               </p>       
           </div>
           <div className='logos-modal'>

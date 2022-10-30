@@ -9,6 +9,7 @@
 .apoio {
   display: flex;
   font-weight: bold;
+  font-size: .7em;
 }
 
 .container-nav :is(.fatec-img) {
@@ -16,7 +17,7 @@
 }
 
 .container-nav :is(.etec-embu) {
-  width: 100px;
+  width: 120px;
 }
 
 .login {
@@ -42,11 +43,12 @@ a {
   }
   
   .container-nav :is(.etec-embu) {
-    width: 60px;
+    width: 90px;
   }
 
   .apoio {
     flex-direction: column;
+    font-size: .5em;
   }
 }
 
@@ -64,9 +66,14 @@ a {
   .apoio {
     align-items: center;
     margin: 15px auto 0 auto;
+    font-size: .6em;
   }
 
   .container-main {
     padding: 15px;
+  }
+
+  .container-nav :is(.etec-embu) {
+    width: 110px;
   }
 }
