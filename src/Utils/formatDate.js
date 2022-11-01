@@ -10,3 +10,13 @@ export function formatDate(date) {
     console.log(err);
   }
 }
+
+export function formatDateEstand(date) {
+  try {
+    return format(parseISO(date), "dd/MM/yyyy", {
+      locale: ptBR,
+    }); 
+  } catch(err) {
+    console.log(err);
+  }
+}

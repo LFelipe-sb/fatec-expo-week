@@ -6,7 +6,7 @@ import Modal from 'react-modal';
 import './style.css';
 
 import { toast } from 'react-toastify';
-import { formatDate } from '../../Utils/formatDate';
+import { formatDate, formatDateEstand } from '../../Utils/formatDate';
 
 function Index(props) {
 
@@ -376,8 +376,9 @@ function Index(props) {
                                             <>
                                                 <td>{
                                                     props.check == 1 ? event.email 
-                                                    : toggle === 'Eventos Abertos'
-                                                    ? formatDate(event.data_evento)
+                                                    : toggle === 'Eventos Abertos' 
+                                                    ? event.tipo === 'palestra' ?
+                                                    formatDate(event.data_evento) : formatDateEstand(event.data_evento) 
                                                         : toggle === 'Minha Agenda' 
                                                         ? formatDate(event.data_evento)
                                                             : formatDate(event.dt_verificacao)

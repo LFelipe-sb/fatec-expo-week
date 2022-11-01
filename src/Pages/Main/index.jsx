@@ -70,8 +70,9 @@ function Main() {
               </p>
 
               <p>
-                <b>Stephanie</b> <br />
-                <i>Auxiliar de Docente na Fatec Osasco.</i>
+                <b>Stephanie Marques Fernandes</b> <br />
+                <i>Auxiliar de Docente na Fatec Osasco. 
+                <br />(Redes de Computadores).</i>
               </p>
 
               <p>
