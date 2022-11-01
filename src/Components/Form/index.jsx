@@ -28,9 +28,9 @@ function Form(props) {
     event.preventDefault();
 
     const isCpf = validateCpf.isValid(cpf);
-    const isEmail = validator.isEmail(email);
+    const isEmail = email !== null ? validator.isEmail(email) : '';
 
-    if(!isCpf) {
+    if(!isCpf && props.user == 0) {
       return toast.warning(`O CPF informado não é valido`, {
         position: "top-center",
         autoClose: 3500,
