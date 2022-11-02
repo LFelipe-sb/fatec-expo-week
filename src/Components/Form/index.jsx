@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { IMaskInput } from "react-imask";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import PulseLoader from 'react-spinners/PulseLoader';
 import Terms from '../Terms/index.jsx';
 import validator from "validator";
 import { cpf as validateCpf } from 'cpf-cnpj-validator'; 
@@ -21,6 +21,7 @@ function Form(props) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [terms, setTerms] = useState(false);
   const [loadModal, setLoadModal] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const navigate = useNavigate();
 
@@ -61,6 +62,10 @@ function Form(props) {
         name, email, ra, cpf, curso, semestre, tel, aceitaTermo: terms,
       }
 
+      if(!name) {
+        return getStudentInfo();
+      }
+
       if(btnName === 'Acessar') {
         setTerms(true);
         navigate("/visita-palestra");
@@ -79,6 +84,7 @@ function Form(props) {
           });
           return;
         }
+
         if(props.user == 0 && !cpf || !email || !name || !tel) {
           toast.warning('Por favor, preencha todos os campos!', {
             position: "top-center",
@@ -145,6 +151,11 @@ function Form(props) {
     const isCpf = validateCpf.isValid(cpf);
 
     if(!isCpf) {
+      setName('');
+      setTel('');
+      setEmail('');
+      setBtnName('Cadastrar');
+      setIsDisabled(false);
       return toast.warning(`O CPF informado não é valido`, {
         position: "top-center",
         autoClose: 3500,
@@ -166,6 +177,11 @@ function Form(props) {
       setIsDisabled(true);
       sessionStorage.setItem("userId", data[0].id_pessoa);
       sessionStorage.setItem("userName", data[0].nome);
+      setSpinner(true);
+      setTimeout(() => {
+        setTerms(true);
+        navigate("/visita-palestra");
+      }, 3000);
     } else {
       setName('');
       setTel('');
@@ -189,6 +205,11 @@ function Form(props) {
       setIsDisabled(true);
       sessionStorage.setItem("userId", data[0].id_pessoa);
       sessionStorage.setItem("userName", data[0].nome);
+      setSpinner(true);
+      setTimeout(() => {
+        setTerms(true);
+        navigate("/visita-palestra");
+      }, 3000);
     } else {
       setName('');
       setTel('');
@@ -196,6 +217,17 @@ function Form(props) {
       setSemestre('');
       setBtnName('Cadastrar');
       setIsDisabled(false);
+
+      return toast.warning(`Dados informados não encontrados`, {
+        position: "top-center",
+        autoClose: 3500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
   
@@ -210,6 +242,7 @@ function Form(props) {
 
   return (
     <div className="container-form">
+      {spinner && <PulseLoader color="#354a46" margin={8}/>}
       <form>
         
         {props.user == 1 ?
