@@ -69,7 +69,7 @@ function Index(props) {
     
             const { data } = await api.post(`/events/confirm-presence`, dataConfirm);   
                         
-            if(data.startsWith('C') || data.startsWith('V')) {
+            if(data.startsWith('C') || data.startsWith('V') || data.startsWith('N')) {
                 toast.error(data, {
                     position: "top-center",
                     autoClose: 3500,
@@ -186,28 +186,54 @@ function Index(props) {
 
     function handleChange(e) {
         const { name, checked } = e.target;
-        if (name === 'allSelected') {
-            if (checked) {
-                tempUser = allEvents.map((event) => {
-                    selectedEvents.push(event.id_evento.toString());
-                    return { ...event, isChecked: checked }
-                });
+
+        if(props.check != 1) {
+            if (name === 'allSelected') {
+                if (checked) {
+                    tempUser = allEvents.map((event) => {
+                        selectedEvents.push(event.id_evento.toString());
+                        return { ...event, isChecked: checked }
+                    });
+                } else {
+                    tempUser = allEvents.map((event) => {
+                        setSelectedEvents([]);
+                        return { ...event, isChecked: checked }
+                    });
+                }
+                setAllEvents(tempUser)
             } else {
-                tempUser = allEvents.map((event) => {
-                    setSelectedEvents([]);
-                    return { ...event, isChecked: checked }
-                });
-            }
-            setAllEvents(tempUser)
+                let tempUser = allEvents.map((event) => event.id_evento == name ? { ...event, isChecked: checked } : event);
+                setAllEvents(tempUser);
+                if (checked && name !== 'allSelected') {
+                    selectedEvents.push(name);
+                } else {
+                    selectedEvents.splice(selectedEvents.indexOf(name), 1);
+                }
+            };
         } else {
-            let tempUser = allEvents.map((event) => event.id_evento == name ? { ...event, isChecked: checked } : event);
-            setAllEvents(tempUser);
-            if (checked && name !== 'allSelected') {
-                selectedEvents.push(name);
+            if (name === 'allSelected') {
+                if (checked) {
+                    tempUser = allEvents.map((event) => {
+                        selectedEvents.push(event.id_pessoa.toString());
+                        return { ...event, isChecked: checked }
+                    });
+                } else {
+                    tempUser = allEvents.map((event) => {
+                        setSelectedEvents([]);
+                        return { ...event, isChecked: checked }
+                    });
+                }
+                setAllEvents(tempUser)
             } else {
-                selectedEvents.splice(selectedEvents.indexOf(name), 1);
-            }
-        };
+                let tempUser = allEvents.map((event) => event.id_pessoa == name ? { ...event, isChecked: checked } : event);
+                setAllEvents(tempUser);
+                if (checked && name !== 'allSelected') {
+                    selectedEvents.push(name);
+                } else {
+                    selectedEvents.splice(selectedEvents.indexOf(name), 1);
+                }
+            };
+        }
     };
 
     async function handleCheckout(e) {
@@ -358,7 +384,7 @@ function Index(props) {
                                         }                                
                                     }                            
                                 }).map((event) =>
-                                    <tr key={event.id_evento}>
+                                    <tr key={props.check == 1 ? event.id_pessoa : event.id_evento}>
                                         { toggle !== 'Minhas Presenças' ?
                                         <td>
                                             <input
@@ -380,7 +406,8 @@ function Index(props) {
                                                     ? event.tipo === 'palestra' ?
                                                     formatDate(event.data_evento) : formatDateEstand(event.data_evento) 
                                                         : toggle === 'Minha Agenda' 
-                                                        ? formatDate(event.data_evento)
+                                                        ? event.tipo === 'palestra' ?
+                                                        formatDate(event.data_evento) : formatDateEstand(event.data_evento)
                                                             : formatDate(event.dt_verificacao)
                                                 }</td>
                                                 {toggle ? <td>{props.check == 1 ? event.email : toggle ? event.tipo : ''}</td> : ''}                                             

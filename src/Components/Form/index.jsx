@@ -147,6 +147,7 @@ function Form(props) {
   }
 
   async function getVisitorInfo() {
+    if(!cpf.length) return;
 
     const isCpf = validateCpf.isValid(cpf);
 
@@ -260,7 +261,7 @@ function Form(props) {
           required
           onBlur={getVisitorInfo}
         />}
-        <input type="email" placeholder='Email: ' value={email} onChange={e => setEmail(e.target.value)} required onBlur={getStudentInfo} disabled={props.user !== 1 ? isDisabled : false}/>
+        <input type="email" placeholder={props.user == 1 ? 'Email Institucional:' : 'Email:'} value={email} onChange={e => setEmail(e.target.value)} required onBlur={getStudentInfo} disabled={props.user !== 1 ? isDisabled : false}/>
         <input type="text" placeholder='Nome: ' value={name} onChange={e => setName(e.target.value)} required disabled={props.user == 1 ? true : isDisabled} />
         {props.user == 1 ? <>
           <input type="text" placeholder='Curso: ' value={curso} onChange={e => setCurso(e.target.value)} required disabled={true}/>
