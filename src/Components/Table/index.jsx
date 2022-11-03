@@ -328,7 +328,7 @@ function Index(props) {
                             onClick={(e) => setToggle(e.target.value)}
                         >Minhas Presenças</button>
                     </div> : '' }
-                <div class="table-wrapper">
+                <div className="table-wrapper">
                     <table className='table'>
                         <thead>
                             {toggle !== 'Minhas Presenças' ? <th><img src={Check} /></th> : ''}
