@@ -17,6 +17,7 @@ function Index(props) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState([]);
     const [confirmCode, setConfirmCode] = useState(null);
+    const [disabledButton, setDisabledButton] = useState(false);
 
     let tempUser;
 
@@ -154,6 +155,7 @@ function Index(props) {
                 return { ...event, isChecked: false }
             });
             setAllEvents(tempUser);
+            setDisabledButton(true);
 
             setTimeout(() => {
                 window.location.reload(true);
@@ -445,7 +447,7 @@ function Index(props) {
                         ? <h4>Não há presenças pendentes de confirmação para este evento</h4>
                         : ''
                 }
-                <button className='buttons-table' onClick={props.check == 1 ? handleCheckout : handleScheduling}>Salvar</button>
+                <button className='buttons-table' disabled={disabledButton} onClick={props.check == 1 ? handleCheckout : handleScheduling}>Salvar</button>
                 {props.check != 1 ?
                 <Link to='/'><button className='buttons-table'>Cancelar</button></Link>
                 : ''}
